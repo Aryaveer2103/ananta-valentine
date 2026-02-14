@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Ananta ❤️</title>
+
+<style>
+
+/* ===== FONT ===== */
+@font-face {
+    font-family: 'Marquise';
+    src: url('MarquisePaulineSignature.ttf') format('truetype');
+}
+
+/* ===== BODY ===== */
+body {
+    margin: 0;
+    font-family: 'Marquise', cursive;
+    overflow: hidden;
+    text-align: center;
+    background: #fff4f6;
+}
+
+/* ===== PAPER TEXTURE OVERLAY ===== */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-image:
+        radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: 0.35;
+}
+
+/* ===== PHOTO BACKGROUND ===== */
+.photo-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 14px;
+    padding: 20px;
+}
+
+.photo-bg img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow:
+        0 0 18px rgba(255,105,180,0.35),
+        0 10px 20px rgba(0,0,0,0.25);
+    transform: rotate(calc(-6deg + 12deg * var(--r)));
+}
+
+/* ===== SPARKLES ===== */
+.sparkle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 8px pink, 0 0 12px hotpink;
+    opacity: 0.6;
+    animation: sparkleFloat linear forwards;
+    z-index: -1;
+}
+
+@keyframes sparkleFloat {
+    to {
+        transform: translateY(-120vh);
+        opacity: 0;
+    }
+}
+
+/* ===== CONTENT ===== */
+.container {
+    margin-top: 5vh;
+    position: relative;
+    z-index: 2;
+}
+
+/* Soft spotlight */
+.container::before {
+    content: "";
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,244,246,0.6) 40%, transparent 70%);
+    z-index: -1;
+    border-radius: 50px;
+}
+
+/* ===== TITLE ===== */
+h1 {
+    font-size: clamp(34px, 5vw, 58px);
+    color: #c2185b;
+    text-shadow:
+        0 0 12px white,
+        0 0 30px pink;
+}
+
+/* ===== BUTTONS ===== */
+.buttons {
+    margin-top: 20px;
+    height: 120px;
+    position: relative;
+}
+
+button {
+    padding: 14px 36px;
+    font-size: 22px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    position: absolute;
+    font-family: 'Marquise', cursive;
+    transition: 0.2s ease;
+}
+
+#yesBtn {
+    background: white;
+    color: #c2185b;
+    left: 35%;
+    top: 40px;
+}
+
+#noBtn {
+    background: #c2185b;
+    color: white;
+    left: 55%;
+    top: 40px;
+}
+
+/* ===== LOVE MESSAGE ===== */
+#loveMessage {
+    margin-top: 20px;
+    font-size: clamp(34px, 4vw, 50px);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #c2185b;
+    line-height: 1.3;
+    text-shadow:
+        0 0 15px white,
+        0 0 40px pink,
+        0 0 70px hotpink;
+}
+
+/* ===== FALLING EMOJIS ===== */
+.falling {
+    position: fixed;
+    top: -50px;
+    font-size: 28px;
+    animation: fall linear forwards;
+    pointer-events: none;
+    z-index: 5;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh); }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="photo-bg" id="photoBackground"></div>
+
+<div class="container">
+    <h1>Ananta, will you be my valentine? ❤️</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">YES 😍</button>
+        <button id="noBtn">NO 😢</button>
+    </div>
+
+    <div id="loveMessage"></div>
+</div>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const music = document.getElementById("bgMusic");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const loveMessage = document.getElementById("loveMessage");
+
+let yesScale = 1;
+
+/* ===== AUTOPLAY ===== */
+window.addEventListener("load", () => {
+    music.volume = 0.6;
+    music.play().catch(() => {
+        document.body.addEventListener("click", () => music.play(), {once:true});
+    });
+});
+
+/* ===== LOAD 21 PHOTOS ===== */
+const photoContainer = document.getElementById("photoBackground");
+const images = [
+"1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg",
+"6.jpeg","7.jpeg","8.jpeg","9.jpeg","10.jpeg",
+"11.jpeg","12.jpeg","13.jpeg","14.jpeg","15.jpeg",
+"16.jpeg","17.jpeg","18.jpeg","19.jpeg","20.jpeg",
+"21.jpeg"
+];
+
+images.forEach(name => {
+    const img = document.createElement("img");
+    img.src = "photos/" + name;
+    img.style.setProperty('--r', Math.random());
+    photoContainer.appendChild(img);
+});
+
+/* ===== SPARKLES ===== */
+function createSparkle() {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.bottom = "-10px";
+    s.style.animationDuration = (Math.random()*6 + 4) + "s";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 10000);
+}
+setInterval(createSparkle, 500);
+
+/* ===== NO ESCAPE + YES GROWS ===== */
+function moveNoButton() {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+
+    yesScale += 0.08;
+    yesBtn.style.transform = `scale(${yesScale})`;
+}
+
+noBtn.addEventListener("mouseover", moveNoButton);
+noBtn.addEventListener("mousedown", moveNoButton);
+
+/* ===== TYPING + RAIN ===== */
+function typeMessage(text, element, speed = 60) {
+    let i = 0;
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
+
+yesBtn.addEventListener("click", () => {
+
+    loveMessage.innerHTML = "";
+
+    const fullText = "I love you my baby, love you lots... <br> from maybe to finally now onto forever ❤️🌹";
+    typeMessage(fullText, loveMessage, 60);
+
+    let count = 0;
+
+    const rain = setInterval(() => {
+
+        for (let i = 0; i < 5; i++) {
+            const el = document.createElement("div");
+            el.className = "falling";
+            el.innerHTML = ["🌹","❤️","💋"][Math.floor(Math.random()*3)];
+            el.style.left = Math.random() * 100 + "vw";
+            el.style.animationDuration = (Math.random()*6 + 6) + "s";
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 10000);
+        }
+
+        count++;
+        if (count > 40) clearInterval(rain);
+
+    }, 400);
+});
+
+</script>
+
+</body>
+</html>
