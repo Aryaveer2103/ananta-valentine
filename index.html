@@ -212,7 +212,7 @@ const images = [
 
 images.forEach(name => {
     const img = document.createElement("img");
-    img.src = "photos/" + name;
+    img.src = name; // Removed "photos/" because images are in root
     img.style.setProperty('--r', Math.random());
     photoContainer.appendChild(img);
 });
@@ -290,3 +290,4 @@ yesBtn.addEventListener("click", () => {
 
 </body>
 </html>
+
